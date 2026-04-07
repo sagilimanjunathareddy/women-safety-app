@@ -1,0 +1,8 @@
+kivy
+opencv-python
+sounddevice
+numpy
+requests
+scipy
+librosa
+tensorflow

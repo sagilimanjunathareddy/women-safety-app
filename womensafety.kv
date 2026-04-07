@@ -1,0 +1,212 @@
+#:kivy 2.3.0
+#:import MapView kivy_garden.mapview.MapView
+#:import MapMarker kivy_garden.mapview.MapMarker
+
+ScreenManager:
+    id: screen_manager
+    SafetyScreen:
+        name: "safety"
+    ContactsScreen:
+        name: "contacts"
+    MapScreen:
+        name: "map"
+    HistoryScreen:
+        name: "history"
+
+<SafetyScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 10
+        canvas.before:
+            Color:
+                rgba: 0.06, 0.07, 0.1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        BoxLayout:
+            size_hint_y: None
+            height: "60dp"
+            spacing: 8
+            Label:
+                text: "👩‍🦰 Women Safety App"
+                font_size: "22sp"
+                bold: True
+                color: 1,1,1,1
+            Label:
+                id: status
+                text: "🟢 Idle"
+                font_size: "16sp"
+                color: 1,1,1,1
+
+        Label:
+            id: location_label
+            text: root.location_text
+            font_size: "15sp"
+            color: 1,1,1,0.9
+            halign: "center"
+            text_size: self.width, None
+            size_hint_y: None
+            height: 40
+
+        BoxLayout:
+            spacing: 8
+            size_hint_y: None
+            height: 60
+            Button:
+                text: "Start Monitoring"
+                background_color: 0,0.6,0,1
+                on_release: root.start_monitoring()
+            Button:
+                text: "Stop Monitoring"
+                background_color: 1,0.2,0.2,1
+                on_release: root.stop_monitoring()
+
+        BoxLayout:
+            spacing: 8
+            size_hint_y: None
+            height: 60
+            Button:
+                text: "Record Emergency Voice"
+                background_color: 0.2,0.4,1,1
+                on_release: root.record_emergency_voice()
+            Button:
+                text: "Play Siren"
+                background_color: 1,0.4,0,1
+                on_release: root.play_manual_siren()
+
+        Widget:
+            size_hint_y: 0.2
+
+        BoxLayout:
+            size_hint_y: None
+            height: 60
+            spacing: 8
+            Button:
+                text: "📇 Contacts"
+                on_release: app.root.current = "contacts"
+            Button:
+                text: "🗺️ Map"
+                on_release: app.root.current = "map"
+            Button:
+                text: "🕒 History"
+                on_release: app.root.current = "history"
+
+
+<ContactsScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 8
+        canvas.before:
+            Color:
+                rgba: 0.06,0.07,0.1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "📇 Trusted Contacts"
+            font_size: "20sp"
+            size_hint_y: None
+            height: 40
+            color: 1,1,1,1
+
+        ScrollView:
+            GridLayout:
+                id: contacts_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 5
+                padding: 5
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 8
+            Button:
+                text: "➕ Add New Contact"
+                background_color: 0,0.7,0.7,1
+                on_release: root.open_add_contact()
+            Button:
+                text: "⬅️ Back"
+                on_release: app.root.current = "safety"
+
+
+<MapScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 8
+        canvas.before:
+            Color:
+                rgba: 0.06,0.07,0.1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "🗺️ Live Location"
+            font_size: "20sp"
+            size_hint_y: None
+            height: 40
+            color: 1,1,1,1
+
+        MapView:
+            id: mapview
+            lat: 20.5937
+            lon: 78.9629
+            zoom: 5
+            double_tap_zoom: True
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            Button:
+                text: "Center to current location"
+                on_press: app.root.get_screen("safety").update_location()
+            Button:
+                text: "⬅️ Back"
+                on_release: app.root.current = "safety"
+
+
+<HistoryScreen>:
+    BoxLayout:
+        orientation: "vertical"
+        padding: 10
+        spacing: 8
+        canvas.before:
+            Color:
+                rgba: 0.06,0.07,0.1,1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: "📜 Alert History"
+            font_size: "20sp"
+            size_hint_y: None
+            height: 40
+            color: 1,1,1,1
+
+        ScrollView:
+            GridLayout:
+                id: history_box
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
+                spacing: 5
+                padding: 5
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            spacing: 8
+            Button:
+                text: "🔄 Refresh"
+                on_release: root.refresh_history()
+            Button:
+                text: "⬅️ Back"
+                on_release: app.root.current = "safety"
