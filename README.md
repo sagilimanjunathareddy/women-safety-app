@@ -25,7 +25,7 @@ python main.py
 Using Buildozer
 
 ## 👨‍💻 Author
-Sagili MAnjunatha Reddy
+Sagili Manjunatha Reddy
 S Vedavyas
 P Naga Babu
 P D Phanindra
